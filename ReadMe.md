@@ -18,7 +18,8 @@ PPL
 
 Kill Process
 ```
-DriverLoader.exe <kill processid>
+UsingBYOVD.exe --k <targit pid>
+UsingBYOVD.exe --ka  (kill av/edr process)
 ```
 开启核晶的*60
 ![image](./pics/360hejing_2026-05-26_160354_877.png)
