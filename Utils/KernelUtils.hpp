@@ -180,7 +180,12 @@ CallKernelFunction(T* outResult, uint64_t KernelFunctionAddress, const A ...argu
 static
 PVOID AllocatePool2(size_t size)
 {
-
+	// fixed windows build version check
+	if (0 == g_KernelUtils->GetExportFunctionOffset("ExAllocatePool2"))
+	{
+		return nullptr;
+	}
+	
 	ULONG64 pAlloc2 = (ULONG64)g_KernelUtils->GetKernelModuleBase("ntoskrnl.exe") +
 								g_KernelUtils->GetExportFunctionOffset("ExAllocatePool2");
 	if (pAlloc2)
