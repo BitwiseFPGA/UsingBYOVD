@@ -180,47 +180,27 @@ CallKernelFunction(T* outResult, uint64_t KernelFunctionAddress, const A ...argu
 static
 PVOID AllocatePool2(size_t size)
 {
-	// fixed windows build version check
-	if (0 == g_KernelUtils->GetExportFunctionOffset("ExAllocatePool2"))
+	auto nllKerbelBase = g_KernelUtils->GetKernelModuleBase("ntoskrnl.exe");
+	if (!nllKerbelBase)
 	{
 		return nullptr;
 	}
-	
-	ULONG64 pAlloc2 = (ULONG64)g_KernelUtils->GetKernelModuleBase("ntoskrnl.exe") +
-								g_KernelUtils->GetExportFunctionOffset("ExAllocatePool2");
-	if (pAlloc2)
-	{
-		ULONG64 pAlloc{ 0 };
-		if (CallKernelFunction(&pAlloc,
-			pAlloc2,
-			POOL_FLAG_NON_PAGED_EXECUTE, // must be using it because we need to execute the shellcode in the allocated memory, otherwise it will cause BSOD with PAGE_FAULT_IN_NONPAGED_AREA when executing the shellcode.
-			size,
-			Tag))
-		{
-			//LOG("[+] ExAllocatePool2 called successfully, allocated memory at: " << std::hex << pAlloc << std::dec << std::endl);
 
-			return reinterpret_cast<PVOID>(pAlloc);
-		}
-		else
-		{
-			//LOG("[-] Failed to call ExAllocatePool2" << std::endl);
-
-			return nullptr;
-		}
-	}
-	else
+	// check build version
+	auto nFuncOffset = g_KernelUtils->GetExportFunctionOffset("ExAllocatePool2");
+	if (0 == nFuncOffset)
 	{
-		//LOG("[-] Failed to get export ExAllocatePool2" << std::endl);
-		auto pExAllocatePoolWithTag = (ULONG64)g_KernelUtils->GetKernelModuleBase("ntoskrnl.exe") + 
-												g_KernelUtils->GetExportFunctionOffset("ExAllocatePoolWithTag");
+		nFuncOffset = g_KernelUtils->GetExportFunctionOffset("ExAllocatePoolWithTag");
+
+		auto pExAllocatePoolWithTag = reinterpret_cast<ULONG64>(nllKerbelBase) + nFuncOffset;
 		if (pExAllocatePoolWithTag)
 		{
 			ULONG64 pAlloc{ 0 };
 			if (CallKernelFunction(&pAlloc,
-				pExAllocatePoolWithTag,
-				NonPagedPool,
-				size,
-				Tag))
+								   pExAllocatePoolWithTag,
+								   NonPagedPool,
+								   size,
+								   Tag))
 			{
 				//LOG("[+] ExAllocatePoolWithTag called successfully, allocated memory at: " << std::hex << pAlloc << std::dec << std::endl);
 				return reinterpret_cast<PVOID>(pAlloc);
@@ -228,6 +208,30 @@ PVOID AllocatePool2(size_t size)
 		}
 
 		return nullptr;
+	}
+	else
+	{
+		ULONG64 pAlloc2 = reinterpret_cast<ULONG64>(nllKerbelBase) + nFuncOffset;
+		if (pAlloc2)
+		{
+			ULONG64 pAlloc{ 0 };
+			if (CallKernelFunction(&pAlloc,
+								   pAlloc2,
+								   POOL_FLAG_NON_PAGED_EXECUTE, // must be using it because we need to execute the shellcode in the allocated memory, otherwise it will cause BSOD with PAGE_FAULT_IN_NONPAGED_AREA when executing the shellcode.
+								   size,
+								   Tag))
+			{
+				//LOG("[+] ExAllocatePool2 called successfully, allocated memory at: " << std::hex << pAlloc << std::dec << std::endl);
+
+				return reinterpret_cast<PVOID>(pAlloc);
+			}
+			else
+			{
+				//LOG("[-] Failed to call ExAllocatePool2" << std::endl);
+
+				return nullptr;
+			}
+		}
 	}
 
 	return nullptr;
