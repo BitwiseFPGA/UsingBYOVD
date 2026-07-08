@@ -159,6 +159,12 @@
     <ClInclude Include="BYOVD\IMFForceDelete123Bin.hpp">
       <Filter>BYOVD</Filter>
     </ClInclude>
+    <ClInclude Include="BYOVD\HardwareMon.h">
+      <Filter>BYOVD</Filter>
+    </ClInclude>
+    <ClInclude Include="BYOVD\HardwareMonBin.hpp">
+      <Filter>BYOVD</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -228,6 +234,9 @@
       <Filter>BYOVD</Filter>
     </ClCompile>
     <ClCompile Include="BYOVD\IMFForceDelete123.cpp">
+      <Filter>BYOVD</Filter>
+    </ClCompile>
+    <ClCompile Include="BYOVD\HardwareMon.cpp">
       <Filter>BYOVD</Filter>
     </ClCompile>
   </ItemGroup>
