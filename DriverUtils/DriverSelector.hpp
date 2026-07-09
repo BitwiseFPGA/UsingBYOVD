@@ -159,6 +159,6 @@ using DriverWorker::GetProvider;
 // Change this to switch to different provider
 // DONT'T using MyPortIODev to mapping driver, it too slowly
 // BiosToolCommonDriver so fast
-#define _USE_PROVIDER ProviderType::HardwareMon
+#define _USE_PROVIDER ProviderType::BiosToolCommonDriver
 
 #define CurrentProvider() GetProvider<_USE_PROVIDER>()
