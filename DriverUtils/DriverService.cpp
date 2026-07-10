@@ -209,18 +209,18 @@ NTSTATUS DriverService::StopAndUnregister()
 
 	//// delete driver file
 	//// JUST FOR TEST DELETE FILE
-	if (g_IUForceDelete->InitDeleteFile())
-	{
-		std::wstring filepath(m_driverPath.begin(), m_driverPath.end());
+	//if (g_IUForceDelete->InitDeleteFile())
+	//{
+	//	std::wstring filepath(m_driverPath.begin(), m_driverPath.end());
 
-		auto bRes = g_IUForceDelete->KernelDeleteFile(const_cast<PWCHAR>(filepath.c_str()));
-		if (!bRes)
-		{
-			LOGW("[-] Failed to delete driver file: " << filepath << std::endl);
-		}
+	//	auto bRes = g_IUForceDelete->KernelDeleteFile(const_cast<PWCHAR>(filepath.c_str()));
+	//	if (!bRes)
+	//	{
+	//		LOGW("[-] Failed to delete driver file: " << filepath << std::endl);
+	//	}
 
-		// DONT STOP ITSELF
-	}
+	//	// DONT STOP ITSELF
+	//}
 
 	ntStatus = RegDeleteTreeW(HKEY_LOCAL_MACHINE, m_wRegServicePath.c_str());
 	if (ntStatus != ERROR_SUCCESS)
