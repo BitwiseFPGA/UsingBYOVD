@@ -9,6 +9,7 @@
 #include "WinMsrDev.h"
 #include "MyPortIODev.h"
 #include "HardwareMon.h"
+#include "Ktapi.h"
 
 
 // Killer
@@ -71,6 +72,7 @@ namespace KillerSelector
 		using Type = std::add_pointer_t<HWAudioX64>;
 	};
 
+
 	template <KillerType _Type>
 	auto GetKiller()
 	{
@@ -94,7 +96,8 @@ namespace DriverWorker
 		BiosToolCommonDriver,
 		WinMsrDev,
 		MyPortIODev,
-		HardwareMon
+		HardwareMon,
+		Ktapi
 	};
 
 	static std::any Providers[] = {
@@ -103,7 +106,8 @@ namespace DriverWorker
 		std::any(std::addressof(BiosToolCommonDriver::Instance())),
 		std::any(std::addressof(WinMsrDev::Instance())),
 		std::any(std::addressof(MyPortIODev::Instance())),
-		std::any(std::addressof(HardwareMon::Instance()))
+		std::any(std::addressof(HardwareMon::Instance())),
+		std::any(std::addressof(Ktapi::Instance()))
 	};
 
 	template <ProviderType _Type>
@@ -145,6 +149,12 @@ namespace DriverWorker
 		using Type = std::add_pointer_t<HardwareMon>;
 	};
 
+	template <>
+	struct GetProviderImpl<ProviderType::Ktapi>
+	{
+		using Type = std::add_pointer_t<Ktapi>;
+	};
+
 	template <ProviderType _Type>
 	auto GetProvider()
 	{
@@ -159,6 +169,6 @@ using DriverWorker::GetProvider;
 // Change this to switch to different provider
 // DONT'T using MyPortIODev to mapping driver, it too slowly
 // BiosToolCommonDriver so fast
-#define _USE_PROVIDER ProviderType::BiosToolCommonDriver
+#define _USE_PROVIDER ProviderType::Ktapi
 
 #define CurrentProvider() GetProvider<_USE_PROVIDER>()
