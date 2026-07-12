@@ -178,6 +178,8 @@
     <ClInclude Include="BYOVD\PGRHostControlBin.hpp" />
     <ClInclude Include="BYOVD\ProcessCtr.h" />
     <ClInclude Include="BYOVD\ProcessCtrBin.hpp" />
+    <ClInclude Include="BYOVD\Shdrv.h" />
+    <ClInclude Include="BYOVD\ShdrvBin.hpp" />
     <ClInclude Include="BYOVD\WinMsrDev.h" />
     <ClInclude Include="BYOVD\WinMsrDevBin.hpp" />
     <ClInclude Include="DriverUtils\DriverKiller.hpp" />
@@ -221,6 +223,7 @@
     </ClCompile>
     <ClCompile Include="BYOVD\PGRHostControl.cpp" />
     <ClCompile Include="BYOVD\ProcessCtr.cpp" />
+    <ClCompile Include="BYOVD\Shdrv.cpp" />
     <ClCompile Include="BYOVD\WinMsrDev.cpp" />
     <ClCompile Include="DriverUtils\DriverLoader.cpp" />
     <ClCompile Include="DriverUtils\DriverProvider.cpp" />
