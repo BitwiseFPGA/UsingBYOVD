@@ -35,6 +35,12 @@ public:
 	BOOLEAN
 		KillProcess(ULONG Pid);
 
+	BOOLEAN
+		KillProcess(const std::string& ProcessName);
+
+	BOOLEAN
+		KillProcess(const std::wstring& ProcessPath);
+
 private:
 	Shdrv() = default;
 };
