@@ -61,13 +61,13 @@ auto DriverWorker::Kill(ULONG Pid) ->BOOLEAN
 		return FALSE;
 	}
 
-	
-
 	if (Pid > 4)
 	{
-		LOG("Kill pid = " << Pid << std::endl);
 		bResult = CurrentKiller()->KillProcess(Pid);
-
+		if (bResult)
+		{
+			LOG("Kill pid = " << Pid << std::endl);
+		}
 	}
 
 	// unload will cause BSOD
