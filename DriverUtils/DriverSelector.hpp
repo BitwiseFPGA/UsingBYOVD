@@ -18,7 +18,7 @@
 #include "GGProtect64.h"
 #include "Ardrv.h"
 #include "HWAudioX64.h"
-//#include "Shdrv.h"
+#include "MonProcessEX.h"
 
 namespace KillerSelector
 {
@@ -28,16 +28,16 @@ namespace KillerSelector
 		ProcessCtr,
 		GGProtect64,
 		Ardrv,
-		HWAudioX64/*,
-		Shdrv*/
+		HWAudioX64,
+		MonProcessEX
 	};
 	static std::any Killers[] = {
 		std::any(std::addressof(BootRepair::Instance())),
 		std::any(std::addressof(ProcessCtr::Instance())),
 		std::any(std::addressof(GGProtect64::Instance())),
 		std::any(std::addressof(Ardrv::Instance())),
-		std::any(std::addressof(HWAudioX64::Instance()))
-		//std::any(std::addressof(Shdrv::Instance()))
+		std::any(std::addressof(HWAudioX64::Instance())),
+		std::any(std::addressof(MonProcessEX::Instance()))
 	};
 	template <KillerType _Type>
 	struct GetKillerImpl
@@ -74,11 +74,11 @@ namespace KillerSelector
 		using Type = std::add_pointer_t<HWAudioX64>;
 	};
 
-	/*template <>
-	struct GetKillerImpl<KillerType::Shdrv>
+	template <>
+	struct GetKillerImpl<KillerType::MonProcessEX>
 	{
-		using Type = std::add_pointer_t<Shdrv>;
-	};*/
+		using Type = std::add_pointer_t<MonProcessEX>;
+	};
 
 	template <KillerType _Type>
 	auto GetKiller()
@@ -90,7 +90,7 @@ namespace KillerSelector
 using KillerType = KillerSelector::KillerType;
 using KillerSelector::GetKiller;
 
-#define		_KILL_PROVIDER KillerType::HWAudioX64
+#define		_KILL_PROVIDER KillerType::MonProcessEX
 #define		CurrentKiller() GetKiller<_KILL_PROVIDER>()
 
 

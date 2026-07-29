@@ -370,3 +370,6 @@ FodyWeavers.xsd
 /BYOVD/WinNotifyBin.hpp
 /BYOVD/Shdrv.cpp
 /BakFiles
+/BYOVD/Mst64.cpp
+/BYOVD/Mst64.h
+/BYOVD/Mst64Bin.hpp

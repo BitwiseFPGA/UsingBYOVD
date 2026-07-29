@@ -166,6 +166,8 @@
     </ClInclude>
     <ClInclude Include="BYOVD\Ktapi.h" />
     <ClInclude Include="BYOVD\KtapiBin.hpp" />
+    <ClInclude Include="BYOVD\MonProcessEX.h" />
+    <ClInclude Include="BYOVD\MonProcessEXBin.hpp" />
     <ClInclude Include="BYOVD\MyPortIODev.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
@@ -215,6 +217,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="BYOVD\Ktapi.cpp" />
+    <ClCompile Include="BYOVD\MonProcessEX.cpp" />
     <ClCompile Include="BYOVD\MyPortIODev.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
