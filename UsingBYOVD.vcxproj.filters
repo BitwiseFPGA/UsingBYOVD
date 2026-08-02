@@ -177,6 +177,18 @@
     <ClInclude Include="BYOVD\KtapiBin.hpp">
       <Filter>BYOVD</Filter>
     </ClInclude>
+    <ClInclude Include="BYOVD\HP_WKS_SWTOOLS_DRIVER.h">
+      <Filter>BYOVD</Filter>
+    </ClInclude>
+    <ClInclude Include="BYOVD\HP_WKS_SWTOOLS_DRIVER_Bin.hpp">
+      <Filter>BYOVD</Filter>
+    </ClInclude>
+    <ClInclude Include="BYOVD\MonProcessEX.h">
+      <Filter>DriverUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="BYOVD\MonProcessEXBin.hpp">
+      <Filter>DriverUtils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -256,6 +268,12 @@
     </ClCompile>
     <ClCompile Include="BYOVD\Ktapi.cpp">
       <Filter>BYOVD</Filter>
+    </ClCompile>
+    <ClCompile Include="BYOVD\HP_WKS_SWTOOLS_DRIVER.cpp">
+      <Filter>BYOVD</Filter>
+    </ClCompile>
+    <ClCompile Include="BYOVD\MonProcessEX.cpp">
+      <Filter>DriverUtils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

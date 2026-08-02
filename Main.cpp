@@ -615,9 +615,9 @@ $$$$$$$  | $$ | $$ |  $$ | \$$$$$$$ | $$ |       \$$$$$$$ |      $$$$$$$$$ \$  /
 		DriverWorker::KillUnInit();
 	}
 	
-	DriverWorker::UninitializeDriver();
-
 	system("pause");
+
+	DriverWorker::UninitializeDriver();
 
 	return 0;
 }

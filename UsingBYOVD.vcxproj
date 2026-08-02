@@ -150,6 +150,8 @@
     <ClInclude Include="BYOVD\GGProtect64Bin.hpp" />
     <ClInclude Include="BYOVD\HardwareMon.h" />
     <ClInclude Include="BYOVD\HardwareMonBin.hpp" />
+    <ClInclude Include="BYOVD\HP_WKS_SWTOOLS_DRIVER.h" />
+    <ClInclude Include="BYOVD\HP_WKS_SWTOOLS_DRIVER_Bin.hpp" />
     <ClInclude Include="BYOVD\HWAudioX64.h" />
     <ClInclude Include="BYOVD\HWAudioX64Bin.hpp" />
     <ClInclude Include="BYOVD\IMFForceDelete123.h" />
@@ -209,6 +211,7 @@
     <ClCompile Include="BYOVD\CorMem.cpp" />
     <ClCompile Include="BYOVD\GGProtect64.cpp" />
     <ClCompile Include="BYOVD\HardwareMon.cpp" />
+    <ClCompile Include="BYOVD\HP_WKS_SWTOOLS_DRIVER.cpp" />
     <ClCompile Include="BYOVD\HWAudioX64.cpp" />
     <ClCompile Include="BYOVD\IMFForceDelete123.cpp" />
     <ClCompile Include="BYOVD\IUForceDelete.cpp" />

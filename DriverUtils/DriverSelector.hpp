@@ -10,6 +10,7 @@
 #include "MyPortIODev.h"
 #include "HardwareMon.h"
 #include "Ktapi.h"
+#include "HP_WKS_SWTOOLS_DRIVER.h"
 
 
 // Killer
@@ -104,7 +105,8 @@ namespace DriverWorker
 		WinMsrDev,
 		MyPortIODev,
 		HardwareMon,
-		Ktapi
+		Ktapi,
+		HP_WKS_SWTOOLS_DRIVER
 	};
 
 	static std::any Providers[] = {
@@ -114,7 +116,8 @@ namespace DriverWorker
 		std::any(std::addressof(WinMsrDev::Instance())),
 		std::any(std::addressof(MyPortIODev::Instance())),
 		std::any(std::addressof(HardwareMon::Instance())),
-		std::any(std::addressof(Ktapi::Instance()))
+		std::any(std::addressof(Ktapi::Instance())),
+		std::any(std::addressof(HP_WKS_SWTOOLS_DRIVER::Instance()))
 	};
 
 	template <ProviderType _Type>
@@ -162,6 +165,12 @@ namespace DriverWorker
 		using Type = std::add_pointer_t<Ktapi>;
 	};
 
+	template <>
+	struct GetProviderImpl<ProviderType::HP_WKS_SWTOOLS_DRIVER>
+	{
+		using Type = std::add_pointer_t<HP_WKS_SWTOOLS_DRIVER>;
+	};
+
 	template <ProviderType _Type>
 	auto GetProvider()
 	{
@@ -176,6 +185,6 @@ using DriverWorker::GetProvider;
 // Change this to switch to different provider
 // DONT'T using MyPortIODev to mapping driver, it too slowly
 // BiosToolCommonDriver so fast
-#define _USE_PROVIDER ProviderType::Ktapi
+#define _USE_PROVIDER ProviderType::HP_WKS_SWTOOLS_DRIVER
 
 #define CurrentProvider() GetProvider<_USE_PROVIDER>()
