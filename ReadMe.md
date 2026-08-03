@@ -1,67 +1,105 @@
-# Using Vulnerability Driver(CorMem.sys)
+# UsingBYOVD
 
-Privilege escalation was successfully achieved using the CorMem.sys(Physical Memory Read/Write) vulnerable driver, as shown in the figure below.
+EN | [中文](./README_CN.md)
 
-![image](./pics/ScreenShot_2026-05-15_194342_118.png)
+![image](./pics/Logo.png)
+
+UsingBYOVD is a Windows kernel-level security research and post-exploitation tool utilizing the **BYOVD (Bring Your Own Vulnerable Driver)** technique. By leveraging known vulnerabilities within legitimately signed third-party drivers, this tool bypasses Windows user-mode and kernel-mode protections (such as DSE and EDR hooks) to perform advanced operations including PPL manipulation, token-stealing privilege escalation, kernel-level process termination, and unsigned driver mapping.
+
+> [!WARNING]
+> **Disclaimer:** This project is created strictly for educational purposes, authorized security auditing, and malware research. Do not use this tool for malicious activities. The author assumes no liability for any damage, data loss, or legal consequences caused by misusing this software.
+
+---
+
+## 🚀 Key Features
+
+*   **PPL Protection Control**: Dynamically injects or strips Protected Process Light (PPL) attributes into/from active processes, rendering them immune to or vulnerable to user-mode tampering.
+*   **Kernel Token Manipulation**: Directly modifies process tokens in kernel space to elevate any process to `NT AUTHORITY\SYSTEM`.
+*   **EDR/AV Killer (Kernel-Level)**: Bypasses standard user-mode API limitations and EDR self-protection hooks by terminating security agents straight from the kernel layer.
+*   **Unsigned Driver Mapping**: Exploits the vulnerable driver to map arbitrary, unsigned custom `.sys` files into the kernel space without triggering Driver Signature Enforcement (DSE).
+*   **Credential Dumping**: Bypasses credential guards and access restrictions to create memory dumps of `lsass.exe` for offline credential analysis.
+
+---
+
+## 🛠 Command-Line Interface (CLI) Reference
+
+The tool parses parameters case-sensitively or case-insensitively based on the specific flags implemented in the C++ source. Below is the precise parameter matrix:
+
+| Long Flag | Short Flags / Aliases | Argument | Description |
+| :--- | :--- | :--- | :--- |
+| `--ppl`, `--PPL` | *None* | *None* | Enables PPL configuration mode. Must be paired with `-add` or `-rve`. |
+| `-add`, `-ADD` | `-a`, `-A` | `<PID>` | **Add action**. Configures target PID for PPL protection if `--ppl` mode is active. |
+| `-rve`, `-RVE` | `-r`, `-R` | `<PID>` | **Remove action**. Strips PPL protection from target PID if `--ppl` mode is active. |
+| `--PriEsc`, `--PS` | *None* | `<PID>` | **Privilege Escalation**. Steals the SYSTEM token and applies it to the target PID. |
+| `--KillProcess` | `--k`, `--K`, `-k`, `-K` | `<PID>` | **Force Kill**. Forcefully terminates the process matching the target PID from kernel space. |
+| `--ka`, `--KA` | *None* | *None* | **Kill All AVs**. Automatically enumerates and terminates all known Antivirus/EDR processes. |
+| `--map` | `--m`, `--M`, `-m`, `-M` | `<Path>` | **Driver Mapper**. Manually maps an unsigned driver file path into kernel space. |
+| `--dmp` | *None* | *None* | **LSASS Dump**. Generates a raw memory dump file of the `lsass.exe` process. |
+| `--help` | `-h` | *None* | Displays the built-in pink-colored help menu and terminates execution. |
+
+---
+
+## 💡 Usage Examples
+
+### 1. PPL Protection Management
+
+*   **Apply PPL Protection to a custom process** (Prevents user-mode EDR/AV from terminating your agent):
+    ```cmd
+    UsingBYOVD.exe --ppl -add 1234
+    ```
+*   **Remove PPL Protection from a target process** (Exposes an EDR/AV process for manipulation):
+    ```cmd
+    UsingBYOVD.exe --ppl -rve 5678
+    ```
+
+### 2. Privilege Escalation
+
+*   **Elevate a specific process (e.g., cmd.exe) to SYSTEM**:
+    ```cmd
+    UsingBYOVD.exe --PriEsc 4321
+    ```
+
+### 3. Evading Security Software (AV/EDR Kill)
+
+*   **Force-terminate a specific protected security process**:
+    ```cmd
+    UsingBYOVD.exe --KillProcess 9999
+    ```
+*   **One-click termination of all known AV/EDR processes running on the machine**:
+    ```cmd
+    UsingBYOVD.exe --ka
+    ```
+
+### 4. Kernel Driver Mapping
+
+*   **Bypass DSE and load an unsigned custom kernel driver**:
+    ```cmd
+    UsingBYOVD.exe --map C:\Windows\Temp\my_unsigned_driver.sys
+    ```
+
+### 5. LSASS Memory Dumping
+
+*   **Dump LSASS memory safely to disk**:
+    ```cmd
+    UsingBYOVD.exe --dmp
+    ```
+
+---
 
 
-Add BiosToolCommonDriver.sys
+## ⚙️ Requirements & Compilation
 
-Privilege escalation
-![image](./pics/ScreenShot_2026-05-17_143556_434.png)
+1.  **Prerequisites**:
+    *   **Privilege Requirements**: The executable must be run from an **Elevated Command Prompt (Administrator)**. The tool utilizes the Native API `NtLoadDriver` to map the driver, which strictly requires the **`SeLoadDriverPrivilege`** to be enabled in the process token.
+    *   **Registry Configuration**: Ensure your execution context has sufficient integrity to write temporary keys under `HKLM\System\CurrentControlSet\Services` for `NtLoadDriver` to reference, or ensure the driver path is properly staged.
+    *   **Driver Placement**: The vulnerable companion driver (`.sys`) must be present in the identical working directory as the executable, unless you have embedded the raw binary into the PE resource section (`.rc`) for runtime extraction.
 
-
-PPL
-
-![image](./pics/ScreenShot_2026-05-17_143717_220.png)
-
-
-Kill Process
-```
-UsingBYOVD.exe --k <targit pid>
-UsingBYOVD.exe --ka  (kill av/edr process)
-```
-开启核晶的*60
-![image](./pics/360hejing_2026-05-26_160354_877.png)
-
-![image](./pics/kill%20360_2026-05-26_160557_313.png)
-
-* 新增了VirtualToPhysical的函数
-**代码来源于redteamfortress（https://github.com/redteamfortress）的项目PPLShade（https://github.com/redteamfortress/PPLShade）**
-
-**The code is derived from the PPLShade project（https://github.com/redteamfortress/PPLShade）, which is authored by redteamfortress（https://github.com/redteamfortress）. Further information on this project can be found on the redteamfortress GitHub page.**
+2.  **Compilation**:
+    *   Open the solution in **Visual Studio 2019**.
+    *   Set the build configuration to **Release | Debug** and architecture to **x64**.
+    *   Ensure the Windows SDK is properly linked. Compile the project.
 
 
-Loader mapping driver
-![image](./pics/LoaderMappingDriver_2026-06-01_123521_640.png)
-
-**代码已经更新**
-
-
-
-add commandline 
-
-
-![image](./pics/mapping%20with%20cmdline.png)
-
-![image](./pics/Privilege%20escaption%20with%20cmdline.png)
-
-
-dmp lsass (不支持Windows 11新版本)
-
-build
-![image](./pics/Tset%20build_2026-06-05_192042_837.png)
-
-remove process protect 
-![image](./pics/remove%20lsass%20protection_2026-06-05_190608_025.png)
-
-dmp file  
-![image](./pics/dmp%20file_2026-06-05_191338_890.png)  
-
-
-**Update DriverSelector**  
-**Just switch the BYOVD driver you want to use in the DriverSelector file.**   
-只要在文件DriverSelector切换你想使用的漏洞驱动即可，注意相应的类型。  
 
 
 ## Syscall
