@@ -94,7 +94,8 @@ UsingBYOVD 是一个基于 **BYOVD（Bring Your Own Vulnerable Driver，自带�
    * 使用前请确保对应的漏洞驱动（Vulnerable Driver）与可执行文件处于同一目录下，或已正确集成在资源文件中。
 
 ## 参考项目
-> [SysWhispers4](https://github.com/JoasASantos/SysWhispers4)
+> SysWhispers4 : [SysWhispers4](https://github.com/JoasASantos/SysWhispers4)  
+> superfetch : [PPLShade](https://github.com/redteamfortress/PPLShade/blob/main/PPLShade/superfetch.h)  
 
 
 ## BYOVD

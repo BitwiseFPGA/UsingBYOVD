@@ -107,6 +107,12 @@ The tool parses parameters case-sensitively or case-insensitively based on the s
 
 Special thanks to the author of [SysWhispers4](https://github.com/JoasASantos/SysWhispers4) for sharing this project.
 
+## Superfetch
+使用了[redteamfortress/PPLShade](https://github.com/redteamfortress/PPLShade) 项目中的superfetch
+
+Utilizes the Superfetch implementation from [redteamfortress/PPLShade](https://github.com/redteamfortress/PPLShade) project.
+
+
 ## BYOVD
 
 **Killer**
